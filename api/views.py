@@ -21,7 +21,7 @@ def wrike_incoming(request):
     # incoming = request.data[0]
     # print(incoming)
     print(request)
-    return Response(request, status=status.HTTP_202_ACCEPTED)
+    return Response('Recieved', status=status.HTTP_202_ACCEPTED)
     # wrikeData = incoming
     # # relevant info to/from webhook
     # folderId = incoming["folderId"]
