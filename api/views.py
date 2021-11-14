@@ -44,8 +44,8 @@ def wrike_incoming(request):
         "Authorization": "Bearer " + auth_token
     }
 
-    # # all eventTypes are sent from Wrike, continues the fuction if the eventType is correct
-    if eventType == 'FolderCreated' or eventType == 'FolderUpdated':
+    # # all eventTypes are sent from Wrike, continues the fuction if the eventType is correct ICONSISTENT WRIKE API
+    if eventType == 'FolderCreated' or eventType == 'FolderUpdated' or eventType == 'ProjectStatusChanged' or eventType == 'CustomFieldUpdated':
         getWrikeData = requests.get(getFolderUrl, headers=headers)
         print(f"Stage 1:  {getWrikeData}")
         getWrikeData = getWrikeData.json().get('data')[0]
@@ -110,8 +110,10 @@ def wrike_incoming(request):
             serializedFromWrike.save()
             result = deletePriorInstance()
             return Response(result, status=status.HTTP_201_CREATED)
-
-    return Response(serializedFromWrike.errors, status=status.HTTP_200_OK)
+        else:
+            Response(serializedFromWrike.errors, status=status.HTTP_200_OK)
+    else:
+        return Response('Event Type is not what we are looking for...', status=status.HTTP_200_OK)
 
 
 @ api_view(["GET"])
