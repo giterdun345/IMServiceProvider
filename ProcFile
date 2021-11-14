@@ -1,1 +1,1 @@
-web: gunicorn imServiceProvider.wsgi
+web gunicorn imServiceProvider.wsgi
