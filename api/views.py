@@ -20,33 +20,36 @@ def wrike_incoming(request):
     # enter into array from wrike webhook
     incoming = request.data[0]
     # print(incoming)
+    print(request)
+    wrikeData = incoming
+    # # relevant info to/from webhook
+    # folderId = incoming["folderId"]
+    # eventType = incoming["eventType"]
+    # auth_token = env("WRIKE_AUTH")
 
-    # relevant info to/from webhook
-    folderId = incoming["folderId"]
-    eventType = incoming["eventType"]
-    auth_token = env("WRIKE_AUTH")
+    # # params and headers used in Wrike GET for folder data
+    # getFolderUrl = f"https://www.wrike.com/api/v4/folders/{folderId}"
+    # headers = {
+    #     "method": "GET",
+    #     "Content-Type": "application/json",
+    #     "User-Agent": "Mozilla/5.0",
+    #     "Authorization": "Bearer " + auth_token
+    # }
 
-    # params and headers used in Wrike GET for folder data
-    getFolderUrl = f"https://www.wrike.com/api/v4/folders/{folderId}"
-    headers = {
-        "method": "GET",
-        "Content-Type": "application/json",
-        "User-Agent": "Mozilla/5.0",
-        "Authorization": "Bearer " + auth_token
-    }
+    # # all eventTypes are sent from Wrike, continues the fuction if the eventType is correct
+    # if eventType == 'FolderCreated' or eventType == 'FolderUpdated':
+    #     wrikeData = requests.get(getFolderUrl, headers=headers)
+    #     wrikeData = wrikeData.json().get('data')[0]
+    #     # extract customFields by id
+    # statement = 'IEABAVGPJUACJTNA'
+    # workImpact = 'IEABAVGPJUACJTN7'
+    # solutionRequirements = 'IEABAVGPJUACJTOA'
+    # possibleSolutions = 'IEABAVGPJUACJTOB'
+    # link = 'IEABAVGPJUACJTO4'
+    # submitter = 'IEABAVGPJUACJTOC'
+    # ADD USER CUSTOMDATA FIELDS for additional ids
 
-    # all eventTypes are sent from Wrike, continues the fuction if the eventType is correct
-    if eventType == 'FolderCreated' or eventType == 'FolderUpdated':
-        wrikeData = requests.get(getFolderUrl, headers=headers)
-        wrikeData = wrikeData.json().get('data')[0]
-        # extract customFields by id
-        # statement = 'IEABAVGPJUACJTNA'
-        # workImpact = 'IEABAVGPJUACJTN7'
-        # solutionRequirements = 'IEABAVGPJUACJTOA'
-        # possibleSolutions = 'IEABAVGPJUACJTOB'
-        # link = 'IEABAVGPJUACJTO4'
-        # submitter = 'IEABAVGPJUACJTOC'
-        # ADD USER CUSTOMDATA FIELDS for additional ids
+    if True:
 
         def findCustomDataField(id):
             """Searches custom field by ID to return its value"""
