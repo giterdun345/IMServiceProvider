@@ -61,7 +61,6 @@ def wrike_incoming(request):
             # link = 'IEABAVGPJUACJTO4'
             # submitter = 'IEABAVGPJUACJTOC'
             # ADD USER CUSTOMDATA FIELDS for additional ids
-            print(item for item in getWrikeData["customFields"])
             return next((item["value"] for item in getWrikeData["customFields"] if item["id"] == id), None)
 
         linksProvided = findCustomDataField("IEABAVGPJUACJTO4")
@@ -111,7 +110,7 @@ def wrike_incoming(request):
             result = deletePriorInstance()
             return Response(result, status=status.HTTP_201_CREATED)
 
-        # return Response(serializedFromWrike.errors, status=status.HTTP_406_NOT_ACCEPTABLE)
+        return Response(serializedFromWrike.errors, status=status.HTTP_200_OK)
 
 
 @ api_view(["GET"])
