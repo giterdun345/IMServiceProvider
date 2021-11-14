@@ -1,5 +1,6 @@
 # import re
 # from django.shortcuts import render
+from django.views.decorators.csrf import ensure_csrf_cookie
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -21,10 +22,13 @@ def wrike_incoming(request):
     incoming = request.data[0]  # ["data"][0] for Folder GET
     print(incoming)
     # relevant info to/from webhook
-    # folderId = incoming["folderId"]
-    # eventType = incoming["eventType"]
+    # folderId, eventType = ''
+    if request.method == 'POST':
+        folderId = incoming["folderId"]
+        eventType = incoming["eventType"]
     # auth_token = env("WRIKE_AUTH")
 
+    print(folderId + eventType)
     return Response('Recieved', status=status.HTTP_200_OK)
     # # params and headers used in Wrike GET for folder data
     # getFolderUrl = f"https://www.wrike.com/api/v4/folders/{folderId}"
