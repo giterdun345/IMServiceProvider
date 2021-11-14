@@ -48,8 +48,10 @@ def wrike_incoming(request):
     if eventType == 'FolderCreated' or eventType == 'FolderUpdated' or eventType == 'ProjectStatusChanged' or eventType == 'CustomFieldUpdated':
         getWrikeData = requests.get(getFolderUrl, headers=headers)
         print(f"Stage 1:  {getWrikeData}")
-        getWrikeData = getWrikeData.json().get('data')[0]
+        getWrikeData = getWrikeData.json()
         print(f"Stage 2: {getWrikeData}")
+        getWrikeData = getWrikeData.get('data')[0]
+        print(f"Stage 3: {getWrikeData}")
 
         def findCustomDataField(id):
             """Searches custom field by ID to return its value"""
