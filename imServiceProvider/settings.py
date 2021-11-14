@@ -166,16 +166,17 @@ LOGGING = {
             'formatter': 'simple'
         },
     },
+
     'loggers': {
         'django': {
             'handlers': ['file'],
             'propagate': True,
             'level': 'DEBUG',
         },
-        'imServiceProvider': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
-        },
+        # 'imServiceProvider': {
+        #     'handlers': ['file'],
+        #     'level': 'DEBUG',
+        # },
 
         'django.request': {
             'handlers': ['console'],
