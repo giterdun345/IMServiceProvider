@@ -20,6 +20,7 @@ def wrike_incoming(request):
     # enter into array from wrike webhook
     # incoming = request.data[0]
     # print(incoming)
+    incoming = request.json()
     print(request["data"][0])
     return Response('Recieved', status=status.HTTP_202_ACCEPTED)
     # wrikeData = incoming
