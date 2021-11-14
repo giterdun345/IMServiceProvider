@@ -67,7 +67,7 @@ def wrike_incoming(request):
             "folderId": getWrikeData["id"],
             "folderPermalink": getWrikeData["permalink"],
             "title": getWrikeData["title"],
-            "startDate": getWrikeData["project"]["startDate"],
+            "startDate": getWrikeData["createdDate"],
             "updatedDate": getWrikeData["updatedDate"],
             "linksProvided": findCustomDataField("IEABAVGPJUACJTO4"),
             "workImpact": findCustomDataField("IEABAVGPJUACJTN7"),
