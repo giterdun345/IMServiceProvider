@@ -24,13 +24,13 @@ def wrike_incoming(request):
     # relevant info from webhook
     if request.method == 'POST':
         # wrike webhook is inconsistent in id
-        if "folderId" in incoming:
-            folderId = incoming.get("folderId", None)
-            print(f"folderId {folderId}")
-
         if "taskId" in incoming:
             folderId = incoming.get("taskId", None)
             print(f"taskId now {folderId}")
+
+        if "folderId" in incoming:
+            folderId = incoming.get("folderId", None)
+            print(f"folderId {folderId}")
 
         eventType = incoming["eventType"]
         auth_token = env("WRIKE_AUTH")
@@ -50,8 +50,13 @@ def wrike_incoming(request):
         print(f"Stage 1:  {getWrikeData}")
         getWrikeData = getWrikeData.json()
         print(f"Stage 2: {getWrikeData}")
-        getWrikeData = getWrikeData.get('data')[0]
-        print(f"Stage 3: {getWrikeData}")
+
+        if requests.status == 200:
+            getWrikeData = getWrikeData.get('data')[0]
+            print(f"Stage 3: {getWrikeData}")
+        else:
+            print(f"Stage 3: Failed")
+            return Response(getWrikeData, status=status.HTTP_200_OK)
 
         def findCustomDataField(id):
             """Searches custom field by ID to return its value"""
@@ -68,12 +73,13 @@ def wrike_incoming(request):
         linksProvided = findCustomDataField("IEABAVGPJUACJTO4")
         workImpact = findCustomDataField("IEABAVGPJUACJTN7")
         statement = findCustomDataField("IEABAVGPJUACJTNA")
-        print('links' + linksProvided)
 
-        print(workImpact + 'WOOOOOOOOOOOOOrk')
+        print('links ' + linksProvided)
+
+        print(workImpact + ' WOOOOOOOOOOOOOrk')
 
         print(
-            statement + 'blah blah blah')
+            statement + ' blah blah blah')
 
         extractedWrikeData = {
             "folderId": getWrikeData["id"],
