@@ -2,6 +2,6 @@ from django.urls import path
 from .views import simple_get, wrike_incoming
 urlpatterns = [
     path('wrike-incoming', wrike_incoming),
-    path('simple-get', simple_get),
+    path('', simple_get),
 
 ]
