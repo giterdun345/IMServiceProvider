@@ -111,7 +111,7 @@ def wrike_incoming(request):
             result = deletePriorInstance()
             return Response(result, status=status.HTTP_201_CREATED)
 
-        return Response(serializedFromWrike.errors, status=status.HTTP_406_NOT_ACCEPTABLE)
+        # return Response(serializedFromWrike.errors, status=status.HTTP_406_NOT_ACCEPTABLE)
 
 
 @ api_view(["GET"])
