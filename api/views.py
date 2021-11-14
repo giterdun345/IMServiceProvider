@@ -96,11 +96,11 @@ def wrike_incoming(request):
             "possibleSolutions": possibleSolutions,
             "solutionRequirements": solutionRequirements,
             "solutionDeveloper": solutionDeveloper,
-            "inputContributor": None,
-            "agreer": None,
-            "decider": None,
-            "implementor": None,
-            "acceptor": None,
+            "inputContributor": "r",
+            "agreer": "r",
+            "decider": "r",
+            "implementor": "r",
+            "acceptor": "r",
         }
 
         serializedFromWrike = PrioritySubmissionSerializer(

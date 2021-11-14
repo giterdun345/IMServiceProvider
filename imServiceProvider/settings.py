@@ -33,10 +33,10 @@ DEBUG = (env('DEBUG') == 'True')
 
 ALLOWED_HOSTS = [
     '*',
-    'boiling-meadow-93698.herokuapp.com',
-    'boiling-meadow-93698.herokuapp.com/',
-    'https://boiling-meadow-93698.herokuapp.com/',
-    'https://boiling-meadow-93698.herokuapp.com',
+    'immense-plains-50482.herokuapp.com',
+    'immense-plains-50482.herokuapp.com/',
+    'https://immense-plains-50482.herokuapp.com',
+    'https://immense-plains-50482.herokuapp.com/',
     '127.0.0.1',
 ]
 
