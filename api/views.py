@@ -23,11 +23,18 @@ def wrike_incoming(request):
     print(incoming)
     # relevant info from webhook
     if request.method == 'POST':
-        folderId = incoming.get("folderId", incoming["taskId"])
-        eventType = incoming["eventType"]
-    # auth_token = env("WRIKE_AUTH")
+        # wrike webhook is inconsistent in id
+        if "folderId" in incoming:
+            folderId = incoming.get("folderId", None)
+            print(f"folderId {folderId}")
 
-    print(folderId + eventType)
+        if "taskId" in incoming:
+            folderId = incoming.get("taskId", None)
+            print(f"taskId now {folderId}")
+
+        eventType = incoming["eventType"]
+        auth_token = env("WRIKE_AUTH")
+
     return Response('Recieved', status=status.HTTP_200_OK)
     # # params and headers used in Wrike GET for folder data
     # getFolderUrl = f"https://www.wrike.com/api/v4/folders/{folderId}"
