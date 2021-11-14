@@ -22,5 +22,5 @@ from rest_framework import status
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
-    path('', HTTPResponse('Page under construction', status=status.HTTP_200_OK))
+    path('', HTTPResponse('<h1>Page under construction<h1>', status=status.HTTP_200_OK))
 ]
