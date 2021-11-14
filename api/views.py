@@ -36,6 +36,8 @@ def wrike_incoming(request):
 
         eventType = incoming["eventType"]
         auth_token = env("WRIKE_AUTH")
+        print(eventType)
+        print(auth_token)
 
     # params and headers used in Wrike GET for folder data
     getFolderUrl = f"https://www.wrike.com/api/v4/folders/{folderId}"
@@ -48,81 +50,84 @@ def wrike_incoming(request):
 
     # # all eventTypes are sent from Wrike, continues the fuction if the eventType is correct ICONSISTENT WRIKE API
     if eventType in ['FolderCreated', 'FolderUpdated', 'ProjectStatusChanged', 'CustomFieldUpdated']:
-        response = requests.get(getFolderUrl, headers=headers)
-        print(f"Stage 1:  {response.status_code}")
-        getWrikeData = response.json()
-        print(f"Stage 2: {getWrikeData}")
+        try:
+            response = requests.get(getFolderUrl, headers=headers)
+            print(f"Stage 1:  {response.status_code}")
+            getWrikeData = response.json()
+            print(f"Stage 2: {getWrikeData}")
 
-        if response.status_code == 200:
-            getWrikeData = getWrikeData.get('data')[0]
-            print(f"Stage 3: {getWrikeData}")
-        else:
-            print(f"Stage 3: Failed")
-            return Response("No Folder Found in Wrike", status=status.HTTP_200_OK)
+            if response.status_code == 200:
+                getWrikeData = getWrikeData.get('data')[0]
+                print(f"Stage 3: {getWrikeData}")
+            else:
+                print(f"Stage 3: Failed")
+                return Response("No Folder Found in Wrike", status=status.HTTP_200_OK)
 
-        def findCustomDataField(id):
-            """Searches custom field by ID to return its value"""
-            # extract customFields by id
-            # statement = 'IEABAVGPJUACJTNA'
-            # workImpact = 'IEABAVGPJUACJTN7'
-            # solutionRequirements = 'IEABAVGPJUACJTOA'
-            # possibleSolutions = 'IEABAVGPJUACJTOB'
-            # link = 'IEABAVGPJUACJTO4'
-            # submitter = 'IEABAVGPJUACJTOC'
-            # ADD USER CUSTOMDATA FIELDS for additional ids
-            return next((item["value"] for item in getWrikeData["customFields"] if item["id"] == id), None)
+            def findCustomDataField(id):
+                """Searches custom field by ID to return its value"""
+                # extract customFields by id
+                # statement = 'IEABAVGPJUACJTNA'
+                # workImpact = 'IEABAVGPJUACJTN7'
+                # solutionRequirements = 'IEABAVGPJUACJTOA'
+                # possibleSolutions = 'IEABAVGPJUACJTOB'
+                # link = 'IEABAVGPJUACJTO4'
+                # submitter = 'IEABAVGPJUACJTOC'
+                # ADD USER CUSTOMDATA FIELDS for additional ids
+                return next((item["value"] for item in getWrikeData["customFields"] if item["id"] == id), None)
 
-        statement = findCustomDataField("IEABAVGPJUACJTNA")
-        workImpact = findCustomDataField("IEABAVGPJUACJTN7")
-        solutionRequirements = findCustomDataField('IEABAVGPJUACJTOA')
-        possibleSolutions = findCustomDataField('IEABAVGPJUACJTOB')
-        linksProvided = findCustomDataField("IEABAVGPJUACJTO4")
-        submitter = findCustomDataField('IEABAVGPJUACJTOC')
-        solutionDeveloper = findCustomDataField("IEABAVGPJUACJ7JQ")
+            statement = findCustomDataField("IEABAVGPJUACJTNA")
+            workImpact = findCustomDataField("IEABAVGPJUACJTN7")
+            solutionRequirements = findCustomDataField('IEABAVGPJUACJTOA')
+            possibleSolutions = findCustomDataField('IEABAVGPJUACJTOB')
+            linksProvided = findCustomDataField("IEABAVGPJUACJTO4")
+            submitter = findCustomDataField('IEABAVGPJUACJTOC')
+            solutionDeveloper = findCustomDataField("IEABAVGPJUACJ7JQ")
 
-        if submitter == "":
-            submitter = 'Anonymous'
+            if submitter == "":
+                submitter = 'Anonymous'
 
-        extractedWrikeData = {
-            "folderId": getWrikeData["id"],
-            "folderPermalink": getWrikeData["permalink"],
-            "title": getWrikeData["title"],
-            "startDate": getWrikeData["createdDate"],
-            "updatedDate": getWrikeData["updatedDate"],
-            "linksProvided": linksProvided,
-            "workImpact": workImpact,
-            "statement": statement,
-            "submitter": submitter,
-            "possibleSolutions": possibleSolutions,
-            "solutionRequirements": solutionRequirements,
-            "solutionDeveloper": solutionDeveloper,
-            "inputContributor": "r",
-            "agreer": "r",
-            "decider": "r",
-            "implementor": "r",
-            "acceptor": "r",
-        }
+            extractedWrikeData = {
+                "folderId": getWrikeData["id"],
+                "folderPermalink": getWrikeData["permalink"],
+                "title": getWrikeData["title"],
+                "startDate": getWrikeData["createdDate"],
+                "updatedDate": getWrikeData["updatedDate"],
+                "linksProvided": linksProvided,
+                "workImpact": workImpact,
+                "statement": statement,
+                "submitter": submitter,
+                "possibleSolutions": possibleSolutions,
+                "solutionRequirements": solutionRequirements,
+                "solutionDeveloper": solutionDeveloper,
+                "inputContributor": "r",
+                "agreer": "r",
+                "decider": "r",
+                "implementor": "r",
+                "acceptor": "r",
+            }
 
-        serializedFromWrike = PrioritySubmissionSerializer(
-            data=extractedWrikeData)
+            serializedFromWrike = PrioritySubmissionSerializer(
+                data=extractedWrikeData)
 
-        def deletePriorInstance():
-            """Deletes all prior instances in db based on FolderId"""
-            instancesOld = PrioritySubmission.objects.filter(
-                folderId=extractedWrikeData["folderId"]).order_by("-updatedDate")
-            for instance in instancesOld[1:]:
-                print(f"Searching ... {instance}")
-                instance.delete()
-            return "Older Instances deleted, new one added"
+            def deletePriorInstance():
+                """Deletes all prior instances in db based on FolderId"""
+                instancesOld = PrioritySubmission.objects.filter(
+                    folderId=extractedWrikeData["folderId"]).order_by("-updatedDate")
+                for instance in instancesOld[1:]:
+                    print(f"Searching ... {instance}")
+                    instance.delete()
+                return "Older Instances deleted, new one added"
 
-        if serializedFromWrike.is_valid():
-            print('Made it to is valid')
-            serializedFromWrike.save()
-            result = deletePriorInstance()
-            return Response(result, status=status.HTTP_200_OK)
-        else:
-            return Response(serializedFromWrike.errors, status=status.HTTP_200_OK)
-
+            if serializedFromWrike.is_valid():
+                print('Made it to is valid')
+                serializedFromWrike.save()
+                result = deletePriorInstance()
+                return Response(result, status=status.HTTP_200_OK)
+            else:
+                return Response(serializedFromWrike.errors, status=status.HTTP_200_OK)
+        except:
+            import sys
+            print(str(sys.exc_info()))
         # return Response('Event Type is not what we are looking for...', status=status.HTTP_200_OK)
     return Response('Event Type is not what we are looking for...', status=status.HTTP_200_OK)
 
