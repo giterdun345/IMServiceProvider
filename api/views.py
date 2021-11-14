@@ -61,6 +61,7 @@ def wrike_incoming(request):
             # link = 'IEABAVGPJUACJTO4'
             # submitter = 'IEABAVGPJUACJTOC'
             # ADD USER CUSTOMDATA FIELDS for additional ids
+            print(item for item in getWrikeData["customFields"])
             return next((item["value"] for item in getWrikeData["customFields"] if item["id"] == id), None)
 
         extractedWrikeData = {
@@ -91,6 +92,7 @@ def wrike_incoming(request):
             instancesOld = PrioritySubmission.objects.filter(
                 folderId=extractedWrikeData["folderId"]).order_by("-updatedDate")
             for instance in instancesOld[1:]:
+                print(f"Searching ... {instance}")
                 instance.delete()
             return "Older Instances deleted, new one added"
 
