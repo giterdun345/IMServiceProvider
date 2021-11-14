@@ -106,11 +106,12 @@ def wrike_incoming(request):
             return "Older Instances deleted, new one added"
 
         if serializedFromWrike.is_valid():
+            print('Made it to is valid')
             serializedFromWrike.save()
             result = deletePriorInstance()
             return Response(result, status=status.HTTP_201_CREATED)
 
-        return Response(serializedFromWrike.errors, status=status.HTTP_200_OK)
+    return Response(serializedFromWrike.errors, status=status.HTTP_200_OK)
 
 
 @ api_view(["GET"])
