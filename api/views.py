@@ -21,10 +21,9 @@ def wrike_incoming(request):
     # enter into array from wrike webhook
     incoming = request.data[0]  # ["data"][0] for Folder GET
     print(incoming)
-    # relevant info to/from webhook
-    # folderId, eventType = ''
+    # relevant info from webhook
     if request.method == 'POST':
-        folderId = incoming["folderId"]
+        folderId = incoming.get("folderId", incoming["taskId"])
         eventType = incoming["eventType"]
     # auth_token = env("WRIKE_AUTH")
 
