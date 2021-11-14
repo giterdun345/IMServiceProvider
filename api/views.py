@@ -49,7 +49,7 @@ def wrike_incoming(request):
         getWrikeData = requests.get(getFolderUrl, headers=headers)
         print(f"Stage 1:  {getWrikeData}")
         getWrikeData = getWrikeData.json().get('data')[0]
-        print(f"Stage 2: {getWrikeData}")
+        # print(f"Stage 2: {getWrikeData}")
 
         def findCustomDataField(id):
             """Searches custom field by ID to return its value"""
@@ -64,6 +64,16 @@ def wrike_incoming(request):
             print(item for item in getWrikeData["customFields"])
             return next((item["value"] for item in getWrikeData["customFields"] if item["id"] == id), None)
 
+        linksProvided = findCustomDataField("IEABAVGPJUACJTO4")
+        workImpact = findCustomDataField("IEABAVGPJUACJTN7")
+        statement = findCustomDataField("IEABAVGPJUACJTNA")
+        print('links' + linksProvided)
+
+        print(workImpact + 'WOOOOOOOOOOOOOrk')
+
+        print(
+            statement + 'blah blah blah')
+
         extractedWrikeData = {
             "folderId": getWrikeData["id"],
             "folderPermalink": getWrikeData["permalink"],
@@ -77,11 +87,11 @@ def wrike_incoming(request):
             "possibleSolutions": findCustomDataField("IEABAVGPJUACJTOB"),
             "solutionRequirements": findCustomDataField("IEABAVGPJUACJTOA"),
             "solutionDeveloper": findCustomDataField("IEABAVGPJUACJ7JQ"),
-            "inputContributor": findCustomDataField("<t>"),
-            "agreer": findCustomDataField("<t>"),
-            "decider": findCustomDataField("<t>"),
-            "implementor": findCustomDataField("<t>"),
-            "acceptor": findCustomDataField("<t>"),
+            "inputContributor": None,
+            "agreer": None,
+            "decider": None,
+            "implementor": None,
+            "acceptor": None,
         }
 
         serializedFromWrike = PrioritySubmissionSerializer(
