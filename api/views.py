@@ -18,16 +18,14 @@ environ.Env.read_env()
 @api_view(['POST'])
 def wrike_incoming(request):
     # enter into array from wrike webhook
-    incoming = request.data  # ["data"][0]
+    incoming = request.data[0]  # ["data"][0] for Folder GET
 
+    # relevant info to/from webhook
+    folderId = incoming["folderId"]
+    eventType = incoming["eventType"]
+    auth_token = env("WRIKE_AUTH")
     print(incoming)
     return Response('Recieved', status=status.HTTP_200_OK)
-    # wrikeData = incoming
-    # # relevant info to/from webhook
-    # folderId = incoming["folderId"]
-    # eventType = incoming["eventType"]
-    # auth_token = env("WRIKE_AUTH")
-
     # # params and headers used in Wrike GET for folder data
     # getFolderUrl = f"https://www.wrike.com/api/v4/folders/{folderId}"
     # headers = {
