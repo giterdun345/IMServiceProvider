@@ -65,14 +65,6 @@ def wrike_incoming(request):
 
             def findCustomDataField(id):
                 """Searches custom field by ID to return its value"""
-                # extract customFields by id
-                # statement = 'IEABAVGPJUACJTNA'
-                # workImpact = 'IEABAVGPJUACJTN7'
-                # solutionRequirements = 'IEABAVGPJUACJTOA'
-                # possibleSolutions = 'IEABAVGPJUACJTOB'
-                # link = 'IEABAVGPJUACJTO4'
-                # submitter = 'IEABAVGPJUACJTOC'
-                # ADD USER CUSTOMDATA FIELDS for additional ids
                 return next((item["value"] for item in getWrikeData["customFields"] if item["id"] == id), None)
 
             statement = findCustomDataField("IEABAVGPJUACJTNA")
