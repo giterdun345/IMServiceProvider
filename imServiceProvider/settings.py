@@ -32,7 +32,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = ['https://boiling-meadow-93698.herokuapp.com/']
+ALLOWED_HOSTS = ['boiling-meadow-93698.herokuapp.com/']
 
 
 # Application definition
