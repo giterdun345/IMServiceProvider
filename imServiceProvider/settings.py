@@ -33,8 +33,8 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = [
-    '*',
-    'boiling-meadow-93698.herokuapp.com/',
+    # '*',
+    'boiling-meadow-93698.herokuapp.com',
     'boiling-meadow-93698.herokuapp.com/',
     'https://boiling-meadow-93698.herokuapp.com/',
     'https://boiling-meadow-93698.herokuapp.com',
