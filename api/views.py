@@ -1,5 +1,7 @@
 # import re
 # from django.shortcuts import render
+from os import link
+from re import sub
 from django.views.decorators.csrf import ensure_csrf_cookie
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -45,18 +47,18 @@ def wrike_incoming(request):
     }
 
     # # all eventTypes are sent from Wrike, continues the fuction if the eventType is correct ICONSISTENT WRIKE API
-    if eventType == 'FolderCreated' or eventType == 'FolderUpdated' or eventType == 'ProjectStatusChanged' or eventType == 'CustomFieldUpdated':
-        getWrikeData = requests.get(getFolderUrl, headers=headers)
-        print(f"Stage 1:  {getWrikeData}")
-        getWrikeData = getWrikeData.json()
+    if eventType in ['FolderCreated', 'FolderUpdated', 'ProjectStatusChanged', 'CustomFieldUpdated']:
+        response = requests.get(getFolderUrl, headers=headers)
+        print(f"Stage 1:  {response.status_code}")
+        getWrikeData = response.json()
         print(f"Stage 2: {getWrikeData}")
 
-        if requests.status == 200:
+        if response.status_code == 200:
             getWrikeData = getWrikeData.get('data')[0]
             print(f"Stage 3: {getWrikeData}")
         else:
             print(f"Stage 3: Failed")
-            return Response(getWrikeData, status=status.HTTP_200_OK)
+            return Response("No Folder Found in Wrike", status=status.HTTP_200_OK)
 
         def findCustomDataField(id):
             """Searches custom field by ID to return its value"""
@@ -70,16 +72,16 @@ def wrike_incoming(request):
             # ADD USER CUSTOMDATA FIELDS for additional ids
             return next((item["value"] for item in getWrikeData["customFields"] if item["id"] == id), None)
 
-        linksProvided = findCustomDataField("IEABAVGPJUACJTO4")
-        workImpact = findCustomDataField("IEABAVGPJUACJTN7")
         statement = findCustomDataField("IEABAVGPJUACJTNA")
+        workImpact = findCustomDataField("IEABAVGPJUACJTN7")
+        solutionRequirements = findCustomDataField('IEABAVGPJUACJTOA')
+        possibleSolutions = findCustomDataField('IEABAVGPJUACJTOB')
+        linksProvided = findCustomDataField("IEABAVGPJUACJTO4")
+        submitter = findCustomDataField('IEABAVGPJUACJTOC')
+        solutionDeveloper = findCustomDataField("IEABAVGPJUACJ7JQ")
 
-        print('links ' + linksProvided)
-
-        print(workImpact + ' WOOOOOOOOOOOOOrk')
-
-        print(
-            statement + ' blah blah blah')
+        if submitter == "":
+            submitter = 'Anonymous'
 
         extractedWrikeData = {
             "folderId": getWrikeData["id"],
@@ -87,13 +89,13 @@ def wrike_incoming(request):
             "title": getWrikeData["title"],
             "startDate": getWrikeData["createdDate"],
             "updatedDate": getWrikeData["updatedDate"],
-            "linksProvided": findCustomDataField("IEABAVGPJUACJTO4"),
-            "workImpact": findCustomDataField("IEABAVGPJUACJTN7"),
-            "statement": findCustomDataField("IEABAVGPJUACJTNA"),
-            "submitter": findCustomDataField("IEABAVGPJUACJTOC"),
-            "possibleSolutions": findCustomDataField("IEABAVGPJUACJTOB"),
-            "solutionRequirements": findCustomDataField("IEABAVGPJUACJTOA"),
-            "solutionDeveloper": findCustomDataField("IEABAVGPJUACJ7JQ"),
+            "linksProvided": linksProvided,
+            "workImpact": workImpact,
+            "statement": statement,
+            "submitter": submitter,
+            "possibleSolutions": possibleSolutions,
+            "solutionRequirements": solutionRequirements,
+            "solutionDeveloper": solutionDeveloper,
             "inputContributor": None,
             "agreer": None,
             "decider": None,
@@ -117,11 +119,12 @@ def wrike_incoming(request):
             print('Made it to is valid')
             serializedFromWrike.save()
             result = deletePriorInstance()
-            return Response(result, status=status.HTTP_201_CREATED)
+            return Response(result, status=status.HTTP_200_OK)
         else:
-            Response(serializedFromWrike.errors, status=status.HTTP_200_OK)
-    else:
-        return Response('Event Type is not what we are looking for...', status=status.HTTP_200_OK)
+            return Response(serializedFromWrike.errors, status=status.HTTP_200_OK)
+
+        # return Response('Event Type is not what we are looking for...', status=status.HTTP_200_OK)
+    return Response('Event Type is not what we are looking for...', status=status.HTTP_200_OK)
 
 
 @ api_view(["GET"])

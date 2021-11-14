@@ -5,7 +5,7 @@ class PrioritySubmission (models.Model):
     folderId = models.CharField(max_length=20, null=False)
     folderPermalink = models.URLField(max_length=100, null=True)
     title = models.CharField(max_length=200)
-    startDate = models.DateField(auto_now=False, null=True)
+    startDate = models.DateTimeField(auto_now=False, null=True)
     updatedDate = models.DateTimeField(auto_now=True)
     linksProvided = models.CharField(max_length=1000, null=True)
     workImpact = models.CharField(max_length=20000, null=True)
