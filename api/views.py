@@ -51,8 +51,8 @@ def wrike_incoming(request):
         print('Entering getFolderDataThenSave')
         getFolderDataThenSave(getFolderUrl, headers)
         print('Stored in db moving onto gapi...')
-        populateGSheets(folderId)
-        print('Check the google drive now')
+        # populateGSheets(folderId)
+        # print('Check the google drive now')
 
         return Response("Older Instances deleted, new one added", status=status.HTTP_200_OK)
     else:
