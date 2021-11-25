@@ -40,8 +40,8 @@ def populateGSheets(folderId):
     service = build('drive', 'v3', credentials=credentials)
     print('service set...')
     # FOLDER_ID will change after shipped
-    TEMPLATE_ID = env("TEMPLATE_ID")
-    FOLDER_ID = env("FOLDER_ID")
+    TEMPLATE_ID = '12zbKd_luG9Bqk_Almpw2Hq7etbV9vESAEGK3bZ3usrg'
+    FOLDER_ID = '1StGjH0wVnoJkJWotTvesk_ki2VjHT2K_'
 
     incoming_file_name = saved_data.title
 
