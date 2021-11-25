@@ -1,13 +1,20 @@
+from posix import environ
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 import gspread
+
+from sandbox import SERVICE_ACCOUNT_FILE
 from .models import PrioritySubmission
 from datetime import datetime
-import os
+# import os
+import environ
+
+env = environ.Env()
+environ.Env.read_env()
 
 
 def populateGSheets(folderId):
-    '''    gets instance by folderId and calls google api to create/update a spreadsheet'''
+    '''gets instance by folderId and calls google api to create/update a spreadsheet'''
     saved_data = PrioritySubmission.objects.get(
         folderId=folderId)
 
@@ -18,18 +25,23 @@ def populateGSheets(folderId):
               'https://www.googleapis.com/auth/spreadsheets'
               ]
 
+    # FOR LOCAL
     # SERVICE_ACCOUNT_FILE = json.loads(json.dumps(SERVICE_ACCOUNT_FILE))
-    DIRNAME = os.path.dirname(__file__)
+    # DIRNAME = os.path.dirname(__file__)
+    # SERVICE_ACCOUNT_FILE = os.path.join(DIRNAME, 'serviceAccountKey.json')
 
+    # FOR DEPLOY
+    SERVICE_ACCOUNT_FILE = env("GOOGLE_APPLICATION_CREDENTIALS")
     credentials = service_account.Credentials.from_service_account_file(
         # SERVICE_ACCOUNT_FILE,
-        os.path.join(DIRNAME, 'serviceAccountKey.json'),
+        SERVICE_ACCOUNT_FILE,
         scopes=SCOPES)
+    print('credentials...')
     service = build('drive', 'v3', credentials=credentials)
-
-    # these will remain constant; FOLDER_ID will change after shipped
-    TEMPLATE_ID = '12zbKd_luG9Bqk_Almpw2Hq7etbV9vESAEGK3bZ3usrg'
-    FOLDER_ID = '1StGjH0wVnoJkJWotTvesk_ki2VjHT2K_'
+    print('service set...')
+    # FOLDER_ID will change after shipped
+    TEMPLATE_ID = env("TEMPLATE_ID")
+    FOLDER_ID = env("FOLDER_ID")
 
     incoming_file_name = saved_data.title
 
@@ -38,6 +50,7 @@ def populateGSheets(folderId):
         "parents": [FOLDER_ID],
     }
 
+    print("Searching files on gdrive...")
     # searches google drive api for existence of file based on given name
     response = service.files().list(q=f"name='{incoming_file_name}'",
                                     spaces='drive',

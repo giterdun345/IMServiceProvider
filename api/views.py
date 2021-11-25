@@ -32,7 +32,7 @@ def wrike_incoming(request):
         eventType = incoming["eventType"]
         auth_token = env("WRIKE_AUTH")
         print(eventType)
-        print(auth_token)
+        # print(auth_token)
 
     # params and headers used in Wrike GET for folder data
     getFolderUrl = f"https://www.wrike.com/api/v4/folders/{folderId}"
@@ -43,13 +43,13 @@ def wrike_incoming(request):
         "Authorization": "Bearer " + auth_token
     }
 
-    print(eventType)
+    # print(eventType)
     # # all eventTypes are sent from Wrike, continues the fuction if the eventType is correct; InCONSISTENT WRIKE API
     if eventType in ['FolderCreated', 'FolderUpdated', 'ProjectStatusChanged', 'CustomFieldUpdated', 'FolderCustomFieldChanged']:
         getFolderDataThenSave(getFolderUrl, headers)
-
-        # populateGSheets(folderId)
-        # print('Check the google drive now')
+        print('Stored in db moving onto gapi...')
+        populateGSheets(folderId)
+        print('Check the google drive now')
 
         return Response("Older Instances deleted, new one added", status=status.HTTP_200_OK)
     else:
