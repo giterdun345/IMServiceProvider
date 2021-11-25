@@ -63,7 +63,7 @@ def getFolderDataThenSave(getFolderUrl, headers):
             instancesOld = PrioritySubmission.objects.filter(
                 folderId=extractedWrikeData["folderId"]).order_by("-updatedDate")
             for instance in instancesOld[1:]:
-                print(f"Searching ... {instance}")
+                print(f"Deleting... {instance}")
                 instance.delete()
             return "Older Instances deleted, new one added"
 

@@ -50,7 +50,7 @@ def populateGSheets(instance):
     results = response.get('files', [])
     if len(results) == 0:
         service.files().copy(fileId=TEMPLATE_ID, body=request_body,
-                             supportsAllDrives=True).execute()
+                             supportsAllDrives=True, copy_permissions=True).execute()
         print('File has been created')
     else:
         print(f'results: {results}')
