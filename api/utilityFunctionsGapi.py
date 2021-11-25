@@ -61,7 +61,7 @@ def populateGSheets(folderId):
     else:
         print(f'results: {results}')
 
-    # UTILITY SCRIPT FOR DELETING REPEATS
+    # UTILITY SCRIPT FOR DELETING REPEATS NOT REQUIRED IN PROD
     for file in response.get('files', []):
         # Delete files if duplicates
         # service.files().delete(fileId=file.get('id')).execute()
