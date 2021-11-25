@@ -1,10 +1,9 @@
-from posix import environ
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 import gspread
 from .models import PrioritySubmission
 from datetime import datetime
-# import os
+import os
 import environ
 
 env = environ.Env()
@@ -13,8 +12,8 @@ environ.Env.read_env()
 
 def populateGSheets(folderId):
     '''gets instance by folderId and calls google api to create/update a spreadsheet'''
-    saved_data = PrioritySubmission.objects.get(
-        folderId=folderId)
+    saved_data = PrioritySubmission.objects.filter(
+        folderId=folderId).get()
 
     print(f'The saved data is {saved_data}')
     SCOPES = ['https://www.googleapis.com/auth/drive',
@@ -24,21 +23,16 @@ def populateGSheets(folderId):
               ]
 
     # FOR LOCAL
-    # SERVICE_ACCOUNT_FILE = json.loads(json.dumps(SERVICE_ACCOUNT_FILE))
     # DIRNAME = os.path.dirname(__file__)
     # SERVICE_ACCOUNT_FILE = os.path.join(DIRNAME, 'serviceAccountKey.json')
 
     # FOR DEPLOY
     SERVICE_ACCOUNT_FILE = env("GOOGLE_APPLICATION_CREDENTIALS")
+
+    # CREDENTIALS
     credentials = service_account.Credentials.from_service_account_file(
-        # SERVICE_ACCOUNT_FILE,
         SERVICE_ACCOUNT_FILE,
         scopes=SCOPES)
-
-    if credentials.valid:
-        print(f'credentials...{credentials}')
-    else:
-        print('No valid Credentials')
 
     service = build('drive', 'v3', credentials=credentials)
     print(f'service set...{service}')
