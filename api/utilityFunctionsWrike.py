@@ -6,6 +6,7 @@ from .serializers import PrioritySubmissionSerializer
 
 
 def getFolderDataThenSave(getFolderUrl, headers):
+    '''given  a folderId, makes a call to Wrike API to obtain all data, populates database by deleting past instances if they exist'''
     try:
         response = requests.get(getFolderUrl, headers=headers)
         print(f"Stage 1:  {response.status_code}")
