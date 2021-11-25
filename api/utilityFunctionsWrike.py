@@ -71,7 +71,7 @@ def getFolderDataThenSave(getFolderUrl, headers):
             print('Made it to is valid')
             serializedFromWrike.save()
             result = deletePriorInstance()
-            yield extractedWrikeData
+
             return Response(result, status=status.HTTP_200_OK)
         else:
             return Response(serializedFromWrike.errors, status=status.HTTP_200_OK)

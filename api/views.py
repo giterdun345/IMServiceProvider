@@ -48,8 +48,8 @@ def wrike_incoming(request):
     if eventType in ['FolderCreated', 'FolderUpdated', 'ProjectStatusChanged', 'CustomFieldUpdated', 'FolderCustomFieldChanged']:
         getFolderDataThenSave(getFolderUrl, headers)
 
-        populateGSheets(folderId)
-        print('Check the google drive now')
+        # populateGSheets(folderId)
+        # print('Check the google drive now')
 
         return Response("Older Instances deleted, new one added", status=status.HTTP_200_OK)
     else:
