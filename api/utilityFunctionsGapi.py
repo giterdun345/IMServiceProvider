@@ -16,7 +16,7 @@ def populateGSheets(folderId):
     saved_data = PrioritySubmission.objects.get(
         folderId=folderId)
 
-    print(saved_data)
+    print(f'The saved data is {saved_data}')
     SCOPES = ['https://www.googleapis.com/auth/drive',
               'https://www.googleapis.com/auth/drive.appdata',
               'https://www.googleapis.com/auth/drive.file',
@@ -34,9 +34,14 @@ def populateGSheets(folderId):
         # SERVICE_ACCOUNT_FILE,
         SERVICE_ACCOUNT_FILE,
         scopes=SCOPES)
-    print('credentials...')
+
+    if credentials.valid:
+        print(f'credentials...{credentials}')
+    else:
+        print('No valid Credentials')
+
     service = build('drive', 'v3', credentials=credentials)
-    print('service set...')
+    print(f'service set...{service}')
     # FOLDER_ID will change after shipped
     TEMPLATE_ID = '12zbKd_luG9Bqk_Almpw2Hq7etbV9vESAEGK3bZ3usrg'
     FOLDER_ID = '1StGjH0wVnoJkJWotTvesk_ki2VjHT2K_'
@@ -56,8 +61,8 @@ def populateGSheets(folderId):
                                     ).execute()
     results = response.get('files', [])
     if len(results) == 0:
-        new_file = service.files().copy(fileId=TEMPLATE_ID, body=request_body,
-                                        supportsAllDrives=True).execute()
+        service.files().copy(fileId=TEMPLATE_ID, body=request_body,
+                             supportsAllDrives=True).execute()
         print('File has been created')
     else:
         print(f'results: {results}')
