@@ -1,4 +1,7 @@
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from .utilityFunctionsGapi import populateGSheets
 
 
 class PrioritySubmission (models.Model):
@@ -24,3 +27,10 @@ class PrioritySubmission (models.Model):
 
     def __str__(self):
         return self.title
+
+
+@receiver(post_save, sender=PrioritySubmission)
+def populate_google(sender, instance, created, **kwargs):
+    if created:
+        print('Entered post save function...')
+        populateGSheets(instance.folderId)

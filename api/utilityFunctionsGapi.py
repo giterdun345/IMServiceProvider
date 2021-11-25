@@ -14,8 +14,8 @@ def populateGSheets(folderId):
     '''gets instance by folderId and calls google api to create/update a spreadsheet'''
     saved_data = PrioritySubmission.objects.filter(
         folderId=folderId).get()
+    print(f'The saved data is called {saved_data}')
 
-    print(f'The saved data is {saved_data}')
     SCOPES = ['https://www.googleapis.com/auth/drive',
               'https://www.googleapis.com/auth/drive.appdata',
               'https://www.googleapis.com/auth/drive.file',
@@ -33,13 +33,10 @@ def populateGSheets(folderId):
     credentials = service_account.Credentials.from_service_account_file(
         SERVICE_ACCOUNT_FILE,
         scopes=SCOPES)
-
     service = build('drive', 'v3', credentials=credentials)
-    print(f'service set...{service}')
-    # FOLDER_ID will change after shipped
+
     TEMPLATE_ID = '12zbKd_luG9Bqk_Almpw2Hq7etbV9vESAEGK3bZ3usrg'
     FOLDER_ID = '1StGjH0wVnoJkJWotTvesk_ki2VjHT2K_'
-
     incoming_file_name = saved_data.title
 
     request_body = {
@@ -62,10 +59,10 @@ def populateGSheets(folderId):
         print(f'results: {results}')
 
     # UTILITY SCRIPT FOR DELETING REPEATS NOT REQUIRED IN PROD
-    for file in response.get('files', []):
+    # for file in response.get('files', []):
         # Delete files if duplicates
         # service.files().delete(fileId=file.get('id')).execute()
-        print('Found file: %s (%s)' % (file.get('name'), file.get('id')))
+        # print('Found file: %s (%s)' % (file.get('name'), file.get('id')))
 
     # fills in google spreadsheet with acell given the column/row
     gc = gspread.authorize(credentials=credentials)
@@ -88,7 +85,7 @@ def populateGSheets(folderId):
     implementor = saved_data.implementor
     acceptor = saved_data.acceptor
 
-    # update the created date if it does not exist else input todays date
+# update the created date if it does not exist else input todays date
     if sh.sheet1.acell('C5').value == None:
         sh.sheet1.update_acell(
             'C5', datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'))
@@ -97,7 +94,7 @@ def populateGSheets(folderId):
     sh.sheet1.update_acell(
         'C6', startDate.strftime("%Y-%m-%d %H:%M:%S.%f"))
     sh.sheet1.update_acell('B11', statement)
-    # sh.sheet1.update_acell('B18', background)
+    # sh.sheet1.update_acell('B18', background) ??? dependent on form
     sh.sheet1.update_acell('B25', workImpact)
     sh.sheet1.update_acell('B33', possibleSolutions)
     sh.sheet1.update_acell('B40', solutionRequirements)
@@ -109,12 +106,9 @@ def populateGSheets(folderId):
     sh.sheet1.update_acell('D61', decider)
     sh.sheet1.update_acell('D62', implementor)
     sh.sheet1.update_acell('D63', acceptor)
-
     sh.sheet1.update_acell('B80', linksProvided)
 # footer
     sh.sheet1.update_acell('F116', folderPermalink)
     sh.sheet1.update_acell(
         'F117', updatedDate.strftime("%Y-%m-%d %H:%M:%S.%f"))
     sh.sheet1.update_acell('B118', folderId)
-
-    # sh.sheet1.update_acell('C6', some kind of model id )
