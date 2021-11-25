@@ -33,4 +33,4 @@ class PrioritySubmission (models.Model):
 def populate_google(sender, instance, created, **kwargs):
     if created:
         print('Entered post save function...')
-        populateGSheets(instance.folderId)
+        populateGSheets(instance)

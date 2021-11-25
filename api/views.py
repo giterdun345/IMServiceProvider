@@ -40,7 +40,6 @@ def wrike_incoming(request):
     # all eventTypes are sent from Wrike, continues the fuction if the eventType is correct; InCONSISTENT WRIKE API
     if eventType in ['FolderCreated', 'FolderUpdated', 'ProjectStatusChanged', 'ProjectDatesChanged', 'CustomFieldUpdated', 'FolderCustomFieldChanged']:
         getFolderDataThenSave(getFolderUrl, headers)
-        print('Stored in db moving onto gapi...')
         return Response("Older Instances deleted, new one added", status=status.HTTP_200_OK)
     else:
         print('Not the event type we dig.')

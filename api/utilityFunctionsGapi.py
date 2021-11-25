@@ -1,7 +1,6 @@
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 import gspread
-from .models import PrioritySubmission
 from datetime import datetime
 import os
 import environ
@@ -10,11 +9,9 @@ env = environ.Env()
 environ.Env.read_env()
 
 
-def populateGSheets(folderId):
+def populateGSheets(instance):
     '''gets instance by folderId and calls google api to create/update a spreadsheet'''
-    saved_data = PrioritySubmission.objects.filter(
-        folderId=folderId).get()
-    print(f'The saved data is called {saved_data}')
+    print(f'The saved data is called {instance}')
 
     SCOPES = ['https://www.googleapis.com/auth/drive',
               'https://www.googleapis.com/auth/drive.appdata',
@@ -23,11 +20,11 @@ def populateGSheets(folderId):
               ]
 
     # FOR LOCAL
-    # DIRNAME = os.path.dirname(__file__)
-    # SERVICE_ACCOUNT_FILE = os.path.join(DIRNAME, 'serviceAccountKey.json')
+    DIRNAME = os.path.dirname(__file__)
+    SERVICE_ACCOUNT_FILE = os.path.join(DIRNAME, 'serviceAccountKey.json')
 
     # FOR DEPLOY
-    SERVICE_ACCOUNT_FILE = env("GOOGLE_APPLICATION_CREDENTIALS")
+    # SERVICE_ACCOUNT_FILE = env("GOOGLE_APPLICATION_CREDENTIALS")
 
     # CREDENTIALS
     credentials = service_account.Credentials.from_service_account_file(
@@ -37,7 +34,7 @@ def populateGSheets(folderId):
 
     TEMPLATE_ID = '12zbKd_luG9Bqk_Almpw2Hq7etbV9vESAEGK3bZ3usrg'
     FOLDER_ID = '1StGjH0wVnoJkJWotTvesk_ki2VjHT2K_'
-    incoming_file_name = saved_data.title
+    incoming_file_name = instance.title
 
     request_body = {
         "name": incoming_file_name,
@@ -68,22 +65,22 @@ def populateGSheets(folderId):
     gc = gspread.authorize(credentials=credentials)
     sh = gc.open(incoming_file_name)
 
-    folderId = saved_data.folderId
-    folderPermalink = saved_data.folderPermalink
-    startDate = saved_data.startDate
-    updatedDate = saved_data.updatedDate
-    linksProvided = saved_data.linksProvided
-    workImpact = saved_data.workImpact
-    statement = saved_data.statement
-    submitter = saved_data.submitter
-    possibleSolutions = saved_data.possibleSolutions
-    solutionRequirements = saved_data.solutionRequirements
-    solutionDeveloper = saved_data.solutionDeveloper
-    inputContributor = saved_data.inputContributor
-    agreer = saved_data.agreer
-    decider = saved_data.decider
-    implementor = saved_data.implementor
-    acceptor = saved_data.acceptor
+    folderId = instance.folderId
+    folderPermalink = instance.folderPermalink
+    startDate = instance.startDate
+    updatedDate = instance.updatedDate
+    linksProvided = instance.linksProvided
+    workImpact = instance.workImpact
+    statement = instance.statement
+    submitter = instance.submitter
+    possibleSolutions = instance.possibleSolutions
+    solutionRequirements = instance.solutionRequirements
+    solutionDeveloper = instance.solutionDeveloper
+    inputContributor = instance.inputContributor
+    agreer = instance.agreer
+    decider = instance.decider
+    implementor = instance.implementor
+    acceptor = instance.acceptor
 
 # update the created date if it does not exist else input todays date
     if sh.sheet1.acell('C5').value == None:
