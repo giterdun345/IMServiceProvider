@@ -1,6 +1,7 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+import requests
 import environ
 import time
 from .utilityFunctionsWrike import getFolderDataThenSave
@@ -16,6 +17,8 @@ def wrike_incoming(request):
     time.sleep(21)
     # 20 seconds to allow the dyno to get up and running
     # enter into array from wrike webhook
+    auth_token = env("WRIKE_AUTH")
+
     incoming = request.data[0]  # ["data"][0] for Folder GET
     print(incoming)
     # relevant info from webhook
@@ -30,7 +33,7 @@ def wrike_incoming(request):
             print(f"folderId {folderId}")
 
         eventType = incoming["eventType"]
-        auth_token = env("WRIKE_AUTH")
+
         print(eventType)
         # print(auth_token)
 
@@ -43,9 +46,9 @@ def wrike_incoming(request):
         "Authorization": "Bearer " + auth_token
     }
 
-    # print(eventType)
     # # all eventTypes are sent from Wrike, continues the fuction if the eventType is correct; InCONSISTENT WRIKE API
-    if eventType in ['FolderCreated', 'FolderUpdated', 'ProjectStatusChanged', 'CustomFieldUpdated', 'FolderCustomFieldChanged']:
+    if eventType in ['FolderCreated', 'FolderUpdated', 'ProjectStatusChanged', 'ProjectDatesChanged', 'CustomFieldUpdated', 'FolderCustomFieldChanged']:
+        print('Entering getFolderDataThenSave')
         getFolderDataThenSave(getFolderUrl, headers)
         print('Stored in db moving onto gapi...')
         populateGSheets(folderId)
@@ -53,6 +56,7 @@ def wrike_incoming(request):
 
         return Response("Older Instances deleted, new one added", status=status.HTTP_200_OK)
     else:
+        print('Not the event type we dig.')
         return Response('Event Type is not what we are looking for...', status=status.HTTP_200_OK)
 
 
