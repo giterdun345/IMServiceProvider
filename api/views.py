@@ -1,10 +1,11 @@
-# import re
-# from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 import environ
-from .uitilityFunctions import getFolderDataThenSave
+import time
+from .utilityFunctionsWrike import getFolderDataThenSave
+from .utilityFunctionsGapi import populateGSheets
+
 
 env = environ.Env()
 environ.Env.read_env()
@@ -12,6 +13,8 @@ environ.Env.read_env()
 
 @ api_view(['POST'])
 def wrike_incoming(request):
+    time.sleep(21)
+    # 20 seconds to allow the dyno to get up and running
     # enter into array from wrike webhook
     incoming = request.data[0]  # ["data"][0] for Folder GET
     print(incoming)
@@ -41,12 +44,12 @@ def wrike_incoming(request):
     }
 
     print(eventType)
-    # # all eventTypes are sent from Wrike, continues the fuction if the eventType is correct ICONSISTENT WRIKE API
+    # # all eventTypes are sent from Wrike, continues the fuction if the eventType is correct; InCONSISTENT WRIKE API
     if eventType in ['FolderCreated', 'FolderUpdated', 'ProjectStatusChanged', 'CustomFieldUpdated', 'FolderCustomFieldChanged']:
         getFolderDataThenSave(getFolderUrl, headers)
 
-        def populateGSheets():
-            return ""
+        populateGSheets(folderId)
+        print('Check the google drive now')
 
         return Response("Older Instances deleted, new one added", status=status.HTTP_200_OK)
     else:
