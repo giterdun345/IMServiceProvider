@@ -2,8 +2,6 @@ from posix import environ
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 import gspread
-
-from sandbox import SERVICE_ACCOUNT_FILE
 from .models import PrioritySubmission
 from datetime import datetime
 # import os
