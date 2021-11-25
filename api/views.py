@@ -14,7 +14,7 @@ environ.Env.read_env()
 
 @ api_view(['POST'])
 def wrike_incoming(request):
-    time.sleep(21)
+
     # 20 seconds to allow the dyno to get up and running
     # enter into array from wrike webhook
     auth_token = env("WRIKE_AUTH")
