@@ -20,11 +20,11 @@ def populateGSheets(instance):
               ]
 
     # FOR LOCAL
-    DIRNAME = os.path.dirname(__file__)
-    SERVICE_ACCOUNT_FILE = os.path.join(DIRNAME, 'serviceAccountKey.json')
+    # DIRNAME = os.path.dirname(__file__)
+    # SERVICE_ACCOUNT_FILE = os.path.join(DIRNAME, 'serviceAccountKey.json')
 
     # FOR DEPLOY
-    # SERVICE_ACCOUNT_FILE = env("GOOGLE_APPLICATION_CREDENTIALS")
+    SERVICE_ACCOUNT_FILE = env("GOOGLE_APPLICATION_CREDENTIALS")
 
     # CREDENTIALS
     credentials = service_account.Credentials.from_service_account_file(
