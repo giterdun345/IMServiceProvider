@@ -70,6 +70,7 @@ def getFolderDataThenSave(getFolderUrl, headers):
             """Deletes all prior instances in db based on FolderId"""
             instancesOld = PrioritySubmission.objects.filter(
                 folderId=extractedWrikeData["folderId"]).order_by("-updatedDate")
+            print(instancesOld)
             for instanceX in instancesOld[1:]:
                 print(f"Deleting... {instanceX}")
                 instanceX.delete()

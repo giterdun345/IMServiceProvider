@@ -85,10 +85,30 @@ def populateGSheets(instance):
     acceptor = instance.acceptor
     currentStatus = instance.currentStatus
 
-# update the created date if it does not exist else input todays date
-    # if sh.sheet1.acell('C5').value == None:
-    #     sh.sheet1.update_acell(
-    #         'C5', datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'))
+    # intentional to slow the process for gspread quota
+    if currentStatus == "IEABAVGPJMBVTIMO":
+        currentStatus = "Incoming"
+
+    if currentStatus == "IEABAVGPJMBVTINC":
+        currentStatus = "Requirements"
+
+    if currentStatus == "IEABAVGPJMBVTIMY":
+        currentStatus = "Solution Development"
+
+    if currentStatus == "IEABAVGPJMBZLCL6":
+        currentStatus = "Implementation"
+
+    if currentStatus == "IEABAVGPJMBVTIMP":
+        currentStatus = "Resolved"
+
+    if currentStatus == "IEABAVGPJMBVTINO":
+        currentStatus = "Pending Scheduling"
+
+    if currentStatus == "IEABAVGPJMB2VOIE":
+        currentStatus = "Scheduled"
+
+    if currentStatus == "IEABAVGPJMBVTINZ":
+        currentStatus = "Cancelled"
 
     sh.sheet1.update_acell('B3', incoming_file_name)
     sh.sheet1.update_acell('C5', dateCreated.strftime("%Y-%m-%d %H:%M:%S.%f"))
