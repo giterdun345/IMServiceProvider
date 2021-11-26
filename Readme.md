@@ -34,7 +34,7 @@
   </a>
 
   <h3 align="center">IM Service Provider</h3>
-  <img src="https://heroku-status-badges.herokuapp.com/" alt="server status">
+  <img src="https://heroku-status-badges.herokuapp.com/immense-plains-50482" alt="server status">
 
   <p align="center">
     This is a service provider, or a middleman, between Wrike and any third party application.
