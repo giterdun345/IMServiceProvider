@@ -21,10 +21,9 @@
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->-
 
-[![GNU License][license-shield]](./LICENSE)
 [![LinkedIn][linkedin-shield]][linkedin-url]
-<!-- [![Heroku Status][heroku-shield]][heroku-url] -->
-
+[![Issues/Request][issues-shield]][issues-url]
+<img src="https://heroku-status-badges.herokuapp.com/immense-plains-50482" alt="server status">
 
 <!-- PROJECT LOGO -->
 <br />
@@ -34,7 +33,6 @@
   </a>
 
   <h3 align="center">IM Service Provider</h3>
-  <img src="https://heroku-status-badges.herokuapp.com/immense-plains-50482" alt="server status">
 
   <p align="center">
     This is a service provider, or a middleman, between Wrike and any third party application.
@@ -113,12 +111,10 @@ Getting started requires the current service account to be authorized. Please fo
 ## Roadmap
 
 -I would like to map the users ID to assign users from the document
+
 -I would like to have an attachment to the document for each project
 
 See the [open issues](https://github.com/giterdun345/imServiceProvider/issues) for a list of proposed features (and known issues). Or make a request for a new feature.
-
-
-
 
 <!-- LICENSE -->
 ## License
@@ -139,8 +135,6 @@ Project Link: [https://github.com/giterdun345/imServiceProvider](https://github.
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [issues-shield]: https://img.shields.io/github/issues/giterdun345/repo.svg?style=for-the-badge
 [issues-url]: https://github.com/giterdun345/repo/issues
-[license-shield]: https://img.shields.io/github/license/giterdun345/repo.svg?style=for-the-badge
-[license-url]: https://github.com/giterdun345/repo/blob/master/LICENSE
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/jm-ketterer
 <!-- [heroku-shield]:
