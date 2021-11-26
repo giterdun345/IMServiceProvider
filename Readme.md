@@ -21,7 +21,7 @@
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->-
 
-[![GNU License][license-shield]][license-url]
+[![GNU License][license-shield]](./LICENSE)
 [![LinkedIn][linkedin-shield]][linkedin-url]
 <!-- [![Heroku Status][heroku-shield]][heroku-url] -->
 
