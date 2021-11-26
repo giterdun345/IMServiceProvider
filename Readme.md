@@ -19,9 +19,13 @@
 *** See the bottom of this document for the declaration of the reference variables
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->-
+-->
 
 [![LinkedIn][linkedin-shield]][linkedin-url]
+[![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/giterdun345/
+imServiceProvider
+/blob/master/LICENSE)
+
 [![Issues/Request][issues-shield]][issues-url]
 <img src="https://heroku-status-badges.herokuapp.com/immense-plains-50482" alt="server status">
 
@@ -80,7 +84,8 @@
 ## About The Project
 The project was created for IM to increase efficiency, ease use in Wrike and to make people's lives a little easier.
 There are many issues with Wrike Integrate and Workato and to resolve these issues, a custom service provider was created
-that is scalable, fast, and secure. This project has eliminated the 100 API calls quota, and 30 minute wait time in Workato/Wrike Integrate. Now, IM has greater limits of 500 requests per 100 seconds per project, and 100 requests per 100 seconds per user. There is no wait time reducing the 30 minute wait time to milliseconds. Furthermore, there is also a 100 job limit in Workato; in other words, IM would only be allowed to make 100 API calls based on a trigger for the whole month. This project eliminates any monthly quota.
+that is scalable, fast, and secure. This project has eliminated the 100 API calls quota, and 30 minute wait time in Workato/Wrike Integrate. Now, IM has greater limits of 500 requests per 100 seconds per project, and 100 requests per 100 seconds per user. There is no wait time reducing the 30 minute wait time to milliseconds. Furthermore, there is also a 100 job limit in Workato. In other words, IM would only be allowed to make 100 API calls based on a trigger for the whole month; this project eliminates any monthly quota.
+The project is easy to use and intuitive, so not much to explain in terms of use. 
 
 ### Built With
 
@@ -92,7 +97,6 @@ that is scalable, fast, and secure. This project has eliminated the 100 API call
 
 <!-- GETTING STARTED -->
 ## Getting Started
-
 Getting started requires the current service account to be authorized. Please follow the link below to learn more about authorizing this application's service account for a domain wide authority.
 <br/>
 <a href="https://developers.google.com/identity/protocols/oauth2/service-account/#delegatingauthority">Domain Authority<a>
@@ -104,6 +108,32 @@ Getting started requires the current service account to be authorized. Please fo
 
 <!-- USAGE EXAMPLES -->
 ## Usage
+Please do not delete the information in the footer of the document. This is what identifies the data being sent to Wrike and ensure it gets imported to the correct project in Wrike.
+
+To save, click the "Priorities" tab in the menu. Click 'Save to Wrike' to save the data to Wrike.
+
+To change status, click the "Priorities" tab in the menu. Hover over change status; there will be a submenu shown that list the status name. Click the status you wish to change to.
+
+Double click in the text area to input data. When you scroll up and down the document, the cell that you have double clicked will follow you.
+
+If you would like to undo changes made, Press Control + 'Z' to undo changes. 
+
+If you would like to change the size of the document, press Control + '+' to increase the size and press Control + '-' to decrease the size.
+
+
+### Troubleshooting
+1. I don't see a new document created in Google Drive
+
+  - Make an update in Wrike by making a small change in one of the custom data fields, then check the Drive for a new file
+
+2. My document did not update
+
+  - Please try not to save the document multiple times within 30 seconds. You can but, you could cause the server to be overwhelmed.
+
+3. I see a green border on my sheet and can't get rid of it.
+
+  - The green border shows you that another user is currently editing that cell.
+
 
 
 
