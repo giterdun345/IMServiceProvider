@@ -11,11 +11,11 @@ def getFolderDataThenSave(getFolderUrl, headers):
         response = requests.get(getFolderUrl, headers=headers)
         print(f"Stage 1:  {response.status_code}")
         getWrikeData = response.json()
-        print(f"Stage 2: {getWrikeData}")
+        # print(f"Stage 2: {getWrikeData}")
 
         if response.status_code == 200:
             getWrikeData = getWrikeData.get('data')[0]
-            print(f"Stage 3: {getWrikeData}")
+            # print(f"Stage 3: {getWrikeData}")
         else:
             print(f"Stage 3: Failed")
             return Response("No Folder Found in Wrike", status=status.HTTP_200_OK)
@@ -32,14 +32,20 @@ def getFolderDataThenSave(getFolderUrl, headers):
         submitter = findCustomDataField('IEABAVGPJUACJTOC')
         solutionDeveloper = findCustomDataField("IEABAVGPJUACJ7JQ")
 
-        if submitter == "":
+        if submitter == None:
             submitter = 'Anonymous'
+
+        if 'startDate' in getWrikeData["project"]:
+            startDate = getWrikeData["project"]["startDate"]
+        else:
+            startDate = 'x'
 
         extractedWrikeData = {
             "folderId": getWrikeData["id"],
             "folderPermalink": getWrikeData["permalink"],
             "title": getWrikeData["title"],
-            "startDate": getWrikeData["createdDate"],
+            "dateCreated": getWrikeData["createdDate"],
+            "startDate": startDate,
             "updatedDate": getWrikeData["updatedDate"],
             "linksProvided": linksProvided,
             "workImpact": workImpact,
@@ -53,8 +59,10 @@ def getFolderDataThenSave(getFolderUrl, headers):
             "decider": "r",
             "implementor": "r",
             "acceptor": "r",
+            "currentStatus": getWrikeData["project"]["customStatusId"]
         }
 
+        print(extractedWrikeData)
         serializedFromWrike = PrioritySubmissionSerializer(
             data=extractedWrikeData)
 
@@ -62,9 +70,9 @@ def getFolderDataThenSave(getFolderUrl, headers):
             """Deletes all prior instances in db based on FolderId"""
             instancesOld = PrioritySubmission.objects.filter(
                 folderId=extractedWrikeData["folderId"]).order_by("-updatedDate")
-            for instance in instancesOld[1:]:
-                print(f"Deleting... {instance}")
-                instance.delete()
+            for instanceX in instancesOld[1:]:
+                print(f"Deleting... {instanceX}")
+                instanceX.delete()
             return "Older Instances deleted, new one added"
 
         if serializedFromWrike.is_valid():

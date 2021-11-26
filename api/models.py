@@ -8,7 +8,8 @@ class PrioritySubmission (models.Model):
     folderId = models.CharField(max_length=20, null=False)
     folderPermalink = models.URLField(max_length=100, null=True, blank=True)
     title = models.CharField(max_length=200)
-    startDate = models.DateTimeField(auto_now=False, null=True, blank=True)
+    dateCreated = models.DateTimeField(auto_now=False, null=True, blank=True)
+    startDate = models.CharField(max_length=15, null=True, blank=True)
     updatedDate = models.DateTimeField(auto_now=True)
     linksProvided = models.CharField(max_length=1000, null=True, blank=True)
     workImpact = models.CharField(max_length=20000, null=True, blank=True)
@@ -24,6 +25,7 @@ class PrioritySubmission (models.Model):
     decider = models.CharField(max_length=100, null=True, blank=True)
     implementor = models.CharField(max_length=100, null=True, blank=True)
     acceptor = models.CharField(max_length=100, null=True, blank=True)
+    currentStatus = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
         return self.title

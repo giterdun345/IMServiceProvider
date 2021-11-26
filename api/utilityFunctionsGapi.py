@@ -47,6 +47,7 @@ def populateGSheets(instance):
                                     spaces='drive',
                                     fields='files(id, name)',
                                     ).execute()
+
     results = response.get('files', [])
     if len(results) == 0:
         service.files().copy(fileId=TEMPLATE_ID, body=request_body,
@@ -57,9 +58,9 @@ def populateGSheets(instance):
 
     # UTILITY SCRIPT FOR DELETING REPEATS NOT REQUIRED IN PROD
     # for file in response.get('files', []):
-        # Delete files if duplicates
-        # service.files().delete(fileId=file.get('id')).execute()
-        # print('Found file: %s (%s)' % (file.get('name'), file.get('id')))
+    # Delete files if duplicates
+    # service.files().delete(fileId=file.get('id')).execute()
+    # print('Found file: %s (%s)' % (file.get('name'), file.get('id')))
 
     # fills in google spreadsheet with acell given the column/row
     gc = gspread.authorize(credentials=credentials)
@@ -67,6 +68,7 @@ def populateGSheets(instance):
 
     folderId = instance.folderId
     folderPermalink = instance.folderPermalink
+    dateCreated = instance.dateCreated
     startDate = instance.startDate
     updatedDate = instance.updatedDate
     linksProvided = instance.linksProvided
@@ -81,15 +83,17 @@ def populateGSheets(instance):
     decider = instance.decider
     implementor = instance.implementor
     acceptor = instance.acceptor
+    currentStatus = instance.currentStatus
 
 # update the created date if it does not exist else input todays date
-    if sh.sheet1.acell('C5').value == None:
-        sh.sheet1.update_acell(
-            'C5', datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'))
+    # if sh.sheet1.acell('C5').value == None:
+    #     sh.sheet1.update_acell(
+    #         'C5', datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'))
 
     sh.sheet1.update_acell('B3', incoming_file_name)
-    sh.sheet1.update_acell(
-        'C6', startDate.strftime("%Y-%m-%d %H:%M:%S.%f"))
+    sh.sheet1.update_acell('C5', dateCreated.strftime("%Y-%m-%d %H:%M:%S.%f"))
+    sh.sheet1.update_acell('C6', startDate)
+    sh.sheet1.update_acell('C7', currentStatus)
     sh.sheet1.update_acell('B11', statement)
     # sh.sheet1.update_acell('B18', background) ??? dependent on form
     sh.sheet1.update_acell('B25', workImpact)
