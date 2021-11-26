@@ -22,11 +22,11 @@
 -->
 
 [![LinkedIn][linkedin-shield]][linkedin-url]
-[![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/giterdun345/
-imServiceProvider
-/blob/master/LICENSE)
+[![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)]
 
 [![Issues/Request][issues-shield]][issues-url]
+[![GitHub issues](https://badgen.net/github/issues/Naereen/Strapdown.js/)](https://GitHub.com/giterdun345/imServiceProvider/issues/)
+
 <img src="https://heroku-status-badges.herokuapp.com/immense-plains-50482" alt="server status">
 
 <!-- PROJECT LOGO -->
@@ -120,21 +120,21 @@ If you would like to undo changes made, Press Control + 'Z' to undo changes.
 
 If you would like to change the size of the document, press Control + '+' to increase the size and press Control + '-' to decrease the size.
 
+You can find the time and date of the last update in the bottom right hand corner of the document in cell 'F117'
+
+You can also find a link to the Wrike project in cell 'F116'
+
+Attachments in the Wrike project are not available in the document, please use the link to navigate back to Wrike to preview, open or download these attachments.
 
 ### Troubleshooting
 1. I don't see a new document created in Google Drive
-
   - Make an update in Wrike by making a small change in one of the custom data fields, then check the Drive for a new file
 
 2. My document did not update
-
-  - Please try not to save the document multiple times within 30 seconds. You can but, you could cause the server to be overwhelmed.
+  - Please try not to save the document multiple times within 30 seconds. You can but, you could cause the server to be overwhelmed. Or, please check that you did not edit the FolderId value in cell 'B118'
 
 3. I see a green border on my sheet and can't get rid of it.
-
   - The green border shows you that another user is currently editing that cell.
-
-
 
 
 <!-- ROADMAP -->
