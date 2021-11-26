@@ -19,11 +19,11 @@
 *** See the bottom of this document for the declaration of the reference variables
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
+-->-
 
-[![MIT License][license-shield]][license-url]
+[![GNU License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
-![](https://heroku-status-badges.herokuapp.com/{immense-plains-50482})
+<!-- [![Heroku Status][heroku-shield]][heroku-url] -->
 
 
 <!-- PROJECT LOGO -->
@@ -34,6 +34,7 @@
   </a>
 
   <h3 align="center">IM Service Provider</h3>
+  <img src="https://heroku-status-badges.herokuapp.com/" alt="server status">
 
   <p align="center">
     This is a service provider, or a middleman, between Wrike and any third party application.
@@ -96,7 +97,6 @@ that is scalable, fast, and secure. This project has eliminated the 100 API call
 
 Getting started requires the current service account to be authorized. Please follow the link below to learn more about authorizing this application's service account for a domain wide authority.
 <br/>
-.
 <a href="https://developers.google.com/identity/protocols/oauth2/service-account/#delegatingauthority">Domain Authority<a>
 <br/>
 
@@ -143,3 +143,5 @@ Project Link: [https://github.com/giterdun345/imServiceProvider](https://github.
 [license-url]: https://github.com/giterdun345/repo/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/jm-ketterer
+<!-- [heroku-shield]:
+[heroku-url]: https://heroku-status-badges.herokuapp.com/immense-plains-50482 -->
