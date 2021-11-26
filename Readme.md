@@ -123,7 +123,7 @@ See the [open issues](https://github.com/giterdun345/imServiceProvider/issues) f
 <!-- LICENSE -->
 ## License
 
-Distributed under the MIT License. See `LICENSE` for more information.
+Distributed under the GNU License. See `LICENSE` for more information.
 
 
 
@@ -140,7 +140,7 @@ Project Link: [https://github.com/giterdun345/imServiceProvider](https://github.
 [issues-shield]: https://img.shields.io/github/issues/giterdun345/repo.svg?style=for-the-badge
 [issues-url]: https://github.com/giterdun345/repo/issues
 [license-shield]: https://img.shields.io/github/license/giterdun345/repo.svg?style=for-the-badge
-[license-url]: https://github.com/giterdun345/repo/blob/master/LICENSE.txt
+[license-url]: https://github.com/giterdun345/repo/blob/master/LICENSE
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/jm-ketterer
 <!-- [heroku-shield]:
