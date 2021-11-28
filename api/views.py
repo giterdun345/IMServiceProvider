@@ -69,13 +69,13 @@ def wrike_outgoing(requesting):
         "access_token": wrike_auth
     }
 
-    try:
-        response = requests.request(url=wrikeUrl, params=params, method="PUT")
-        if response.status_code == 200:
-            print('Status: PUT to Wrike 200')
-            return Response('Data transfer complete', status=status.HTTP_200_OK)
-        else:
-            print(response.text)
-            return Response(f'Nothing Transfered not 200 {response.text}', status=status.HTTP_418_IM_A_TEAPOT)
-    except:
-        return Response('Not complete {response.text}', status=status.HTTP_409_CONFLICT)
+    # try:
+    response = requests.request(url=wrikeUrl, params=params, method="PUT")
+    # if response.status_code == 200:
+    # print('Status: PUT to Wrike 200')
+    # return Response('Data transfer complete', status=status.HTTP_200_OK)
+    # else:
+    #     print(response.text)
+    return Response(f'Nothing Transfered not 200 {response.text}', status=status.HTTP_418_IM_A_TEAPOT)
+    # except:
+    # return Response('Not complete {response.text}', status=status.HTTP_409_CONFLICT)
