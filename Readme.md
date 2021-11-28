@@ -90,6 +90,8 @@ Please do not delete the information in the footer of the document. This is what
 
 To save, click the "Priorities" tab in the menu. Click 'Save to Wrike' to save the data to Wrike.
 
+If you want a new line, Google Sheets doesn't allow you to press Enter to get a newline. You must press 'Alt' and then 'Enter'
+
 To change status, click the "Priorities" tab in the menu. Hover over change status; there will be a submenu shown that list the status name. Click the status you wish to change to.
 
 Double click in the text area to input data. When you scroll up and down the document, the cell that you have double clicked will follow you.
