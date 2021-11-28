@@ -56,7 +56,6 @@ def simple_get(request):
 
 @ api_view(['POST'])
 def wrike_outgoing(requesting):
-    print(json.loads(requesting))
     wrikeUrl = requesting.data.get('encodedUrl')
     wrike_auth = env('WRIKE_AUTH')
     title = requesting.data.get('title')
@@ -69,8 +68,6 @@ def wrike_outgoing(requesting):
         "title": title,
         "access_token": wrike_auth
     }
-
-    print(f'after: {json.loads(params["customFields"])}')
 
     try:
         response = requests.request(url=wrikeUrl, params=params, method="PUT")
