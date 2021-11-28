@@ -56,6 +56,7 @@ def simple_get(request):
 
 @ api_view(['POST'])
 def wrike_outgoing(requesting):
+    print(requesting)
     wrikeUrl = requesting.data.get('encodedUrl')
     wrike_auth = env('WRIKE_AUTH')
     title = requesting.data.get('title')
