@@ -60,12 +60,16 @@ def wrike_outgoing(requesting):
     wrike_auth = env('WRIKE_AUTH')
     title = requesting.data.get('title')
     customFields = requesting.data.get('customFields')
+    customFields = str(customFields).replace('"', '\"')
 
+    print(f"before: {customFields}")
     params = {
-        "customFields": str(customFields).replace('"', '\"'),
+        "customFields": customFields,
         "title": title,
         "access_token": wrike_auth
     }
+
+    print(f'after: {params["customFields"]}')
 
     try:
         response = requests.request(url=wrikeUrl, params=params, method="PUT")
