@@ -5,7 +5,7 @@ from rest_framework import status
 import requests
 import environ
 from .utilityFunctionsWrike import getFolderDataThenSave
-
+import json
 env = environ.Env()
 environ.Env.read_env()
 
@@ -56,7 +56,7 @@ def simple_get(request):
 
 @ api_view(['POST'])
 def wrike_outgoing(requesting):
-    print(requesting)
+    print(json.loads(requesting))
     wrikeUrl = requesting.data.get('encodedUrl')
     wrike_auth = env('WRIKE_AUTH')
     title = requesting.data.get('title')
@@ -70,7 +70,7 @@ def wrike_outgoing(requesting):
         "access_token": wrike_auth
     }
 
-    print(f'after: {params["customFields"]}')
+    print(f'after: {json.loads(params["customFields"])}')
 
     try:
         response = requests.request(url=wrikeUrl, params=params, method="PUT")
