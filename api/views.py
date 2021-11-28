@@ -1,6 +1,8 @@
+from requests import status_codes
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+import requests
 import environ
 from .utilityFunctionsWrike import getFolderDataThenSave
 
@@ -49,4 +51,29 @@ def wrike_incoming(request):
 @ api_view(["GET"])
 def simple_get(request):
     print(request)
-    return Response('Your request has been met', status=status.HTTP_200_OK)
+    return Response('Your request has been met, nothing to see here.', status=status.HTTP_200_OK)
+
+
+@ api_view(['POST'])
+def wrike_outgoing(requesting):
+    wrikeUrl = requesting.data.get('encodedUrl')
+    wrike_auth = env('WRIKE_AUTH')
+    title = requesting.data.get('title')
+    customFields = requesting.data.get('customFields')
+
+    params = {
+        "customFields": str(customFields).replace('"', '\"'),
+        "title": title,
+        "access_token": wrike_auth
+    }
+
+    try:
+        response = requests.request(url=wrikeUrl, params=params, method="PUT")
+        if response.status_code == 200:
+            print('Status: PUT to Wrike 200')
+            return Response('Data transfer complete', status=status.HTTP_200_OK)
+        else:
+            print(response.text)
+            return Response(f'Nothing Transfered not 200 {response.text}', status=status.HTTP_418_IM_A_TEAPOT)
+    except:
+        return Response('Not complete {response.text}', status=status.HTTP_409_CONFLICT)
