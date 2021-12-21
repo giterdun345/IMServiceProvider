@@ -17,6 +17,7 @@ environ.Env.read_env()
 def project_incoming(request):
     print(request)
     # 20 seconds to allow the dyno to get up and running?
+    print(request.json())
     auth_token = env("WRIKE_AUTH")
     incoming = request.data[0]  # ["data"][0] for Folder GET
 
