@@ -68,6 +68,9 @@ def project_incoming(request):
     startDate = getWrikeData["project"]["startDate"]
     endDate = getWrikeData["project"]["endDate"]
     currentStatus = getWrikeData["project"]["customStatusId"]
+    
+    if currentStatus == 'IEABAVGPJMA73JDT':
+        return Response("Project has not been approved; no document creation.", status=status.HTTP_200_OK)
 
     SCOPES = ['https://www.googleapis.com/auth/drive',
             'https://www.googleapis.com/auth/drive.appdata',
