@@ -80,11 +80,11 @@ def project_incoming(request):
               ]
 
     # FOR LOCAL
-    DIRNAME = os.path.dirname(__file__)
-    SERVICE_ACCOUNT_FILE = os.path.join(DIRNAME, 'serviceAccountKey.json')
+    # DIRNAME = os.path.dirname(__file__)
+    # SERVICE_ACCOUNT_FILE = os.path.join(DIRNAME, 'serviceAccountKey.json')
 
     # FOR DEPLOY
-    # SERVICE_ACCOUNT_FILE = env("GOOGLE_APPLICATION_CREDENTIALS")
+    SERVICE_ACCOUNT_FILE = env("GOOGLE_APPLICATION_CREDENTIALS")
 
     # CREDENTIALS
     credentials = service_account.Credentials.from_service_account_file(
@@ -182,3 +182,12 @@ def project_incoming(request):
 def project_get(request):
     print(request)
     return Response('Nothing here yet, but your request has been met.', status=status.HTTP_200_OK)
+
+
+# [{
+#     "webhookId": "IEAADQQLKQAKAOPB",
+#     "eventAuthorId": "KQAKAOPB",
+#     "eventType": "ProjectStatusChanged",
+#     "folderId": "IEABAVGPI4YKF42S",
+#     "lastUpdatedDate": "2016-10-10T11:33:28Z"
+# }]
