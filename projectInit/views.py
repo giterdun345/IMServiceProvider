@@ -15,6 +15,7 @@ environ.Env.read_env()
 
 @ api_view(['POST'])
 def project_incoming(request):
+    print(request)
     # 20 seconds to allow the dyno to get up and running?
     auth_token = env("WRIKE_AUTH")
     incoming = request.data[0]  # ["data"][0] for Folder GET
@@ -50,43 +51,44 @@ def project_incoming(request):
             getWrikeData = response.json()
             if response.status_code == 200:
                 getWrikeData = getWrikeData.get('data')[0]
-        
+                print(getWrikeData)
+
             else:
-                return Response("No Folder Found in Wrike", status=status.HTTP_200_OK)        
+                return Response("No Folder Found in Wrike", status=status.HTTP_200_OK)
         except:
             import sys
             print(str(sys.exc_info()))
     else:
         return Response('Event Type is not what we are looking for...', status=status.HTTP_200_OK)
 
-
     # UPLOAD WITH  GAPI
-    folderId= getWrikeData["id"]
+    folderId = getWrikeData["id"]
     folderPermalink = getWrikeData["permalink"]
-    title= getWrikeData["title"]
+    title = getWrikeData["title"]
     createdDate = getWrikeData["createdDate"]
     startDate = getWrikeData["project"]["startDate"]
     endDate = getWrikeData["project"]["endDate"]
     currentStatus = getWrikeData["project"]["customStatusId"]
-    
+
     if currentStatus == 'IEABAVGPJMA73JDT':
         return Response("Project has not been approved; no document creation.", status=status.HTTP_200_OK)
 
     SCOPES = ['https://www.googleapis.com/auth/drive',
-            'https://www.googleapis.com/auth/drive.appdata',
-            'https://www.googleapis.com/auth/drive.file',
-            'https://www.googleapis.com/auth/spreadsheets'
-            ]
+              'https://www.googleapis.com/auth/drive.appdata',
+              'https://www.googleapis.com/auth/drive.file',
+              'https://www.googleapis.com/auth/spreadsheets'
+              ]
 
     # FOR LOCAL
-    # DIRNAME = os.path.dirname(__file__)
-    # SERVICE_ACCOUNT_FILE = os.path.join(DIRNAME, 'serviceAccountKey.json')
+    DIRNAME = os.path.dirname(__file__)
+    SERVICE_ACCOUNT_FILE = os.path.join(DIRNAME, 'serviceAccountKey.json')
 
     # FOR DEPLOY
-    SERVICE_ACCOUNT_FILE = env("GOOGLE_APPLICATION_CREDENTIALS")
+    # SERVICE_ACCOUNT_FILE = env("GOOGLE_APPLICATION_CREDENTIALS")
 
     # CREDENTIALS
-    credentials = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+    credentials = service_account.Credentials.from_service_account_file(
+        SERVICE_ACCOUNT_FILE, scopes=SCOPES)
     service = build('drive', 'v3', credentials=credentials)
 
     TEMPLATE_ID = '1CoNcyCSRI7Y_ieQCZyGXquD1HyJQQ3ACDRnHc087_l0'
@@ -97,7 +99,7 @@ def project_incoming(request):
         "name": incoming_file_name,
         "parents": [FOLDER_ID],
     }
-    
+
     print("Searching files on gdrive...")
     # searches google drive api for existence of file based on given name
     response = service.files().list(q=f"name='{incoming_file_name}'",
@@ -109,15 +111,15 @@ def project_incoming(request):
     # created tells IMSP to send an attachment or not to wrike on initial creation
     created = ''
     if len(results) == 0:
-        created =True
+        created = True
         newPMOFile = service.files().copy(fileId=TEMPLATE_ID, body=request_body,
-                            supportsAllDrives=True).execute()
+                                          supportsAllDrives=True).execute()
         print(newPMOFile)
         print('File has been created')
     else:
         created = False
         print(f'results: {results}')
-    
+
     # custom status id to text
     if currentStatus == "IEABAVGPJMBPKMVU":
         currentStatus = "Not Started"
@@ -148,17 +150,17 @@ def project_incoming(request):
 
     gc = gspread.authorize(credentials=credentials)
     sh = gc.open(incoming_file_name)
-    sh.sheet1.update_acell('C4', title) 
+    sh.sheet1.update_acell('C4', title)
     sh.sheet1.update_acell("C9", folderPermalink)
-    sh.sheet1.update_acell('F12', currentStatus)           
+    sh.sheet1.update_acell('F12', currentStatus)
     sh.sheet1.update_acell('C11', createdDate)
     sh.sheet1.update_acell('C12', startDate)
     sh.sheet1.update_acell('C13', endDate)
 
-    if created:     
+    if created:
         # post attachment
-        print('Sending attachment...') 
-        
+        print('Sending attachment...')
+
         postAttachment = f"https://www.wrike.com/api/v4/folders/{folderId}/attachments"
         headers = {
             "method": "POST",
@@ -166,16 +168,17 @@ def project_incoming(request):
             "User-Agent": "Mozilla/5.0",
             "Authorization": "Bearer " + auth_token,
             "X-Requested-With": "XMLHttpRequest",
-            "X-File-Name":incoming_file_name,
+            "X-File-Name": incoming_file_name,
         }
 
-        response = requests.post(postAttachment, headers=headers, data=newPMOFile)
+        response = requests.post(
+            postAttachment, headers=headers, data=newPMOFile)
         print(f"Attachment Response:  {response.json()}")
 
-    return Response("Created new document from template; Data populated template", status=status.HTTP_200_OK)  
+    return Response("Created new document from template; Data populated template", status=status.HTTP_200_OK)
+
 
 @ api_view(["GET"])
 def project_get(request):
     print(request)
     return Response('Nothing here yet, but your request has been met.', status=status.HTTP_200_OK)
-
