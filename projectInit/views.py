@@ -8,6 +8,7 @@ from googleapiclient.discovery import build
 import gspread
 import os
 import urllib
+import sys
 
 env = environ.Env()
 environ.Env.read_env()
@@ -15,9 +16,7 @@ environ.Env.read_env()
 
 @ api_view(['POST'])
 def project_incoming(request):
-    print(request)
     # 20 seconds to allow the dyno to get up and running?
-    print(request.json())
     auth_token = env("WRIKE_AUTH")
     incoming = request.data[0]  # ["data"][0] for Folder GET
 
@@ -53,12 +52,15 @@ def project_incoming(request):
             if response.status_code == 200:
                 getWrikeData = getWrikeData.get('data')[0]
                 print(getWrikeData)
+                sys.stdout.flush()
 
             else:
                 return Response("No Folder Found in Wrike", status=status.HTTP_200_OK)
         except:
             import sys
             print(str(sys.exc_info()))
+            sys.stdout.flush()
+
     else:
         return Response('Event Type is not what we are looking for...', status=status.HTTP_200_OK)
 
@@ -117,9 +119,11 @@ def project_incoming(request):
                                           supportsAllDrives=True).execute()
         print(newPMOFile)
         print('File has been created')
+        sys.stdout.flush()
     else:
         created = False
         print(f'results: {results}')
+        sys.stdout.flush()
 
     # custom status id to text
     if currentStatus == "IEABAVGPJMBPKMVU":
@@ -161,6 +165,7 @@ def project_incoming(request):
     if created:
         # post attachment
         print('Sending attachment...')
+        sys.stdout.flush()
 
         postAttachment = f"https://www.wrike.com/api/v4/folders/{folderId}/attachments"
         headers = {
@@ -175,6 +180,7 @@ def project_incoming(request):
         response = requests.post(
             postAttachment, headers=headers, data=newPMOFile)
         print(f"Attachment Response:  {response.json()}")
+        sys.stdout.flush()
 
     return Response("Created new document from template; Data populated template", status=status.HTTP_200_OK)
 
@@ -182,6 +188,7 @@ def project_incoming(request):
 @ api_view(["GET"])
 def project_get(request):
     print(request)
+    sys.stdout.flush()
     return Response('Nothing here yet, but your request has been met.', status=status.HTTP_200_OK)
 
 
