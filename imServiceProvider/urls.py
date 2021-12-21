@@ -22,4 +22,5 @@ from rest_framework import status
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('api.urls')),
+    path('project-init/', include('projectInit.urls'))
 ]

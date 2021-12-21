@@ -5,7 +5,7 @@ from rest_framework import status
 import requests
 import environ
 from .utilityFunctionsWrike import getFolderDataThenSave
-import json
+
 env = environ.Env()
 environ.Env.read_env()
 

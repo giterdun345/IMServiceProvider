@@ -53,6 +53,7 @@ INSTALLED_APPS = [
 
     # local
     'api',
+    'projectInit',
 
     # third party
     'rest_framework',
