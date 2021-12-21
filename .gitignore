@@ -1,6 +1,6 @@
 
 serviceAccountKey.json
-
+*.json
 mysite.log
 # Django #
 *.log
